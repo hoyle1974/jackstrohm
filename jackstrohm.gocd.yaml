@@ -89,3 +89,64 @@ pipelines:
                   - mkdir build && cd build && buildah push jackstrohm:${GO_PIPELINE_LABEL} oci-archive:./jackstrohm.tar:jackstrohm:${GO_PIPELINE_LABEL}
                 command: /bin/bash
                 run_if: passed
+    - push:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          push-jackstrohm:
+            elastic_profile_id: buildah
+            timeout: 0
+            artifacts:
+            tasks:
+            - fetch:
+                pipeline: jackstrohm
+                stage: package
+                job: package-jackstrohm
+                source: build/
+            - exec:
+                arguments:
+                  - -c
+                  - buildah pull oci-archive:./build/jackstrohm.tar 
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
+                  - buildah login -u jstrohm -p ${DOCKER_PASSWORD} docker.io
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
+                  - buildah push jackstrohm:${GO_PIPELINE_LABEL} docker://jstrohm/jackstrohm:${GO_PIPELINE_LABEL}
+                command: /bin/bash
+                run_if: passed
+    - deploy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          push-jackstrohm:
+            elastic_profile_id: kubectl
+            timeout: 0
+            artifacts:
+            tasks:
+            - exec:
+                arguments:
+                  - -c
+                  - kubectl get pod -n default
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
+                  - kubectl set image deployment/jackstrohm jackstrohm=jstrohm/jackstrohm:${GO_PIPELINE_LABEL} -n default
+                command: /bin/bash
+                run_if: passed

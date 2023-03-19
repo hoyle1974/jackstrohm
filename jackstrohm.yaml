@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackstrohm
+  labels:
+    app: jackstrohm
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackstrohm
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: jackstrohm
+        version: v1
+    spec:
+      containers:
+      - name: jackstrohm
+        image: jstrohm/jackstrohm:1
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackstrohm
+  labels:
+    app: jackstrohm
+    service: jackstrohm
+spec:
+  selector:
+    app: jackstrohm
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: jackstrohm-sm
+  labels:
+    name: jackstrohm
+spec:
+  selector:
+    matchLabels:
+      app: jackstrohm
+  endpoints:
+    - port: http
+      path: /metrics
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: jackstrohm
+spec:
+  hosts:
+  - jackstrohm.gunsmoke.local
+  gateways:
+  - default/primary-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    - port: 8080
+    route:
+    - destination:
+        host: jackstrohm.default.svc.cluster.local
+        port:
+          number: 8080
+      weight: 100
