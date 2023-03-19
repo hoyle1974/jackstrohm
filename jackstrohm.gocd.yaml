@@ -25,7 +25,7 @@ pipelines:
             timeout: 0
             artifacts:
             - build:
-                source: jackstrohm
+                source: public
             tasks:
             - exec:
                 arguments:
