@@ -48,7 +48,7 @@ pipelines:
             - exec:
                 arguments:
                   - -c
-                  - cp ./nginx.conf ./output/conf/nginx.conf
+                  - cp ./nginx.conf ./output/nginx.conf
                 command: /bin/bash
                 run_if: passed
     - package:
