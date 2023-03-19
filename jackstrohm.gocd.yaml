@@ -26,7 +26,6 @@ pipelines:
             artifacts:
             - build:
                 source: public
-            - build:
                 source: conf
             tasks:
             - exec:
