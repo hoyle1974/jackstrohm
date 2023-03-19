@@ -33,14 +33,12 @@ pipelines:
                   - hugo 
                 command: /bin/bash
                 run_if: passed
-            tasks:
             - exec:
                 arguments:
                   - -c
                   - mkdir output
                 command: /bin/bash
                 run_if: passed
-            tasks:
             - exec:
                 arguments:
                   - -c
