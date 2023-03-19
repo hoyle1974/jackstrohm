@@ -70,13 +70,7 @@ pipelines:
                 pipeline: jackstrohm
                 stage: compile
                 job: compile-jackstrohm
-                source: public/
-            - exec:
-                arguments:
-                  - -c
-                  - pwd
-                command: /bin/bash
-                run_if: passed
+                source: output/
             - exec:
                 arguments:
                   - -c
