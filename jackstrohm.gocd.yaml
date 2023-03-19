@@ -26,6 +26,8 @@ pipelines:
             artifacts:
             - build:
                 source: public
+            - conf:
+                source: conf
             tasks:
             - exec:
                 arguments:
@@ -36,6 +38,50 @@ pipelines:
             - exec:
                 arguments:
                   - -c
+                  - mkdir conf && cp ./nginx.conf ./conf/nginx.conf
+                command: /bin/bash
+                run_if: passed
+    - package:
+        fetch_materials: true
+        keep_artifacts: true
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          package-jackstrohm:
+            elastic_profile_id: buildah
+            timeout: 0
+            artifacts:
+            - build:
+                source: build
+            tasks:
+            - fetch:
+                pipeline: jackstrohm
+                stage: compile
+                job: compile-jackstrohm
+                source: public/
+            - exec:
+                arguments:
+                  - -c
+                  - pwd
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
                   - find .
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
+                  - buildah bud -t jackstrohm:${GO_PIPELINE_LABEL} -f Dockerfile .
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                  - -c
+                  - mkdir build && cd build && buildah push jackstrohm:${GO_PIPELINE_LABEL} oci-archive:./jackstrohm.tar:jackstrohm:${GO_PIPELINE_LABEL}
                 command: /bin/bash
                 run_if: passed
