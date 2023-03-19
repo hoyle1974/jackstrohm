@@ -1,0 +1,10 @@
+FROM gocd/gocd-agent-centos-9:v22.3.0
+USER root
+RUN yum -y install wget
+RUN wget https://copr.fedorainfracloud.org/coprs/daftaupe/hugo/repo/epel-7/daftaupe-hugo-epel-7.repo -O /etc/yum.repos.d/hugo.repo
+RUN yum update -y
+RUN yum -y install hugo
+RUN yum -y remove apparmor
+RUN rm -rf /var/cache /var/log/dnf* /var/log/yum.*
+USER go
+ENTRYPOINT ["/docker-entrypoint.sh"]
