@@ -2,6 +2,5 @@ FROM nginx:alpine
 
 WORKDIR /app
 
-COPY . .
-
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./output/public ./public
+COPY ./output/nginx.conf /etc/nginx/nginx.conf
