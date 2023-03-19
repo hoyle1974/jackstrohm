@@ -31,13 +31,27 @@ pipelines:
             - exec:
                 arguments:
                   - -c
-                  - hugo
+                  - hugo 
+                command: /bin/bash
+                run_if: passed
+            tasks:
+            - exec:
+                arguments:
+                  - -c
+                  - mkdir output
+                command: /bin/bash
+                run_if: passed
+            tasks:
+            - exec:
+                arguments:
+                  - -c
+                  - mv public output
                 command: /bin/bash
                 run_if: passed
             - exec:
                 arguments:
                   - -c
-                  - mkdir conf && cp ./nginx.conf ./conf/nginx.conf
+                  - cp ./nginx.conf ./output/conf/nginx.conf
                 command: /bin/bash
                 run_if: passed
     - package:
