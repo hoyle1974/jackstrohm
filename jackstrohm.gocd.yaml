@@ -25,8 +25,7 @@ pipelines:
             timeout: 0
             artifacts:
             - build:
-                source: public
-                source: conf
+                source: output
             tasks:
             - exec:
                 arguments:
