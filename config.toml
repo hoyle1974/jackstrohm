@@ -1,4 +1,4 @@
-baseURL = 'http://example.org/'
+baseURL = 'http://www.jackstrohm.com/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = 'ananke'
+title = "Jack Strohm's Blog"
+theme = 'spaced-blog'

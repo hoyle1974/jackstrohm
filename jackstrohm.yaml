@@ -59,6 +59,7 @@ metadata:
 spec:
   hosts:
   - jackstrohm.gunsmoke.local
+  - jackstrohm.com
   gateways:
   - default/primary-gateway
   http:
