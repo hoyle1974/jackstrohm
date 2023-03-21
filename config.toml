@@ -2,3 +2,5 @@ baseURL = 'http://www.jackstrohm.com/'
 languageCode = 'en-us'
 title = "Jack Strohm's Blog"
 theme = 'ananke'
+disqusShortname = 'jackstrohm'
+commentoEnable = true
