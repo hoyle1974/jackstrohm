@@ -3,4 +3,5 @@ languageCode = 'en-us'
 title = "Jack Strohm's Blog"
 theme = 'ananke'
 disqusShortname = 'jackstrohm'
-commentoEnable = true
+[params]
+	show_reading_time = true

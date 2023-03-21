@@ -31,7 +31,7 @@ pipelines:
             - exec:
                 arguments:
                   - -c
-                  - hugo 
+                  - HUGO_ENV=production hugo 
                 command: /bin/bash
                 run_if: passed
             - exec:
