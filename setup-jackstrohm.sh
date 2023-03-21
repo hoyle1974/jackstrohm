@@ -5,7 +5,7 @@ GOCD_URL="http://gocd.gunsmoke.local:31468"
 
 GiteaJackStrohm() {
 echo "------------------- Setup jackstrohm mirror in Gitea"
-curl -H "Content-Type: application/json" -d '{"name":"jackstrohm-initial-setup"}' -u gitea-admin:admin $GITEA_URL'/api/v1/users/gitea-admin/tokens' | tr ',' '\n' | grep sha1 | cut -f2 -d':' | cut -f2 -d'"' >> ./token
+curl -H "Content-Type: application/json" -d '{"name":"jackstrohm-initial-setup"}' -u gitea-admin:adminadmin $GITEA_URL'/api/v1/users/gitea-admin/tokens' | tr ',' '\n' | grep sha1 | cut -f2 -d':' | cut -f2 -d'"' >> ./token
 TOKEN=`cat token`
 echo "Token: $TOKEN"
 rm token
